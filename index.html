@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mesij to</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #f3f8ff;
+  --surface: #ffffff;
+  --ink: #1b1b33;
+  --muted: #585f82;
+  --line: #d9e2f5;
+  --c1: #ffd23f;
+  --c2: #ff8fa3;
+  --c3: #5fe3b0;
+  --c4: #7cc4ff;
+  --c5: #ffb067;
+  --c6: #c3b1ff;
+  --on-c: #1b1b33;
+  --good: #0b7a55;
+  --danger: #c0262d;
+  --flag-bg: #fff0cc;
+  --flag-ink: #7a4b00;
+  --glow-a: rgba(255, 210, 63, 0.35);
+  --glow-b: rgba(124, 196, 255, 0.35);
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151833;
+    --surface: #1f2347;
+    --ink: #f3f4ff;
+    --muted: #aab0dc;
+    --line: #343a6b;
+    --good: #6ee7b7;
+    --danger: #ff9a9f;
+    --flag-bg: #3d3015;
+    --flag-ink: #ffd98a;
+    --glow-a: rgba(255, 210, 63, 0.16);
+    --glow-b: rgba(124, 196, 255, 0.16);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(560px 280px at 100% 0, var(--glow-a), transparent 70%),
+    radial-gradient(520px 260px at 0 22%, var(--glow-b), transparent 70%);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.wrap { max-width: 640px; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 28px; }
+.hl { text-decoration: underline; text-decoration-color: var(--tint, var(--c1)); text-decoration-thickness: 0.16em; text-underline-offset: 0.14em; text-decoration-skip-ink: none; }
+header { display: flex; flex-direction: column; gap: 10px; }
+.dots { display: flex; gap: 8px; }
+.dots span { width: 14px; height: 14px; border-radius: 50%; display: block; }
+.dots span:nth-child(1) { background: var(--c1); }
+.dots span:nth-child(2) { background: var(--c2); }
+.dots span:nth-child(3) { background: var(--c3); }
+.dots span:nth-child(4) { background: var(--c4); }
+.dots span:nth-child(5) { background: var(--c5); }
+.dots span:nth-child(6) { background: var(--c6); }
+h1 { font-family: var(--display); font-weight: 800; font-size: 52px; line-height: 1.05; margin: 0; letter-spacing: -0.03em; }
+.lead { margin: 0; color: var(--muted); font-size: 17px; max-width: 46ch; }
+.h { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--c4); outline-offset: 2px; }
+.notice { background: var(--flag-bg); color: var(--flag-ink); padding: 12px 16px; border-radius: 14px; }
+.empty { border: 2px dashed var(--c4); border-radius: 18px; padding: 24px 20px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.chip { --tint: var(--c1); display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; border: 2px solid var(--tint); background: var(--surface); font-weight: 600; transition: transform 0.15s; }
+.chip:hover { transform: translateY(-2px); }
+.chip[aria-pressed="true"] { background: var(--tint); color: var(--on-c); }
+.chip.off { border-style: dashed; color: var(--muted); }
+.chip.off[aria-pressed="true"] { color: var(--on-c); }
+.chip small { font-size: 12px; font-weight: 500; opacity: 0.8; }
+.compose { --tint: var(--c1); background: var(--surface); border: 2px solid var(--tint); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.compose textarea { width: 100%; min-height: 110px; resize: vertical; border: 0; background: transparent; padding: 0; outline: none; line-height: 1.5; }
+.row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.meta { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.btn { border: 0; background: var(--tint, var(--c1)); color: var(--on-c); font-weight: 700; padding: 11px 20px; border-radius: 14px; transition: transform 0.15s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.status { min-height: 1.5em; margin: 10px 0 0; font-weight: 600; color: var(--good); }
+.status.err { color: var(--danger); }
+.card { border: 2px solid var(--line); border-radius: 20px; padding: 20px; background: var(--surface); }
+.card p { margin: 0 0 14px; color: var(--muted); }
+.form { display: flex; flex-direction: column; gap: 10px; }
+.form label { font-size: 14px; font-weight: 600; }
+.form input, .form select { padding: 11px 14px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); width: 100%; min-width: 0; }
+.link { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; font-size: 14px; align-self: flex-start; }
+.foot { margin: 0; font-size: 13px; color: var(--muted); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+[hidden] { display: none !important; }
+@media (max-width: 480px) { h1 { font-size: 44px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <h1><span class="hl">Sulatan</span></h1>
+    <p class="lead">Pick a name and leave them a note. It lands in their email with no name on it, so say the nice thing.</p>
+  </header>
+
+  <div id="setup" class="notice" hidden>This page is not connected to your Google Sheet yet, so nothing can be sent. Finish step 4 in the README, then reload.</div>
+  <div id="loadError" class="notice" hidden>The circle could not be loaded. Check your connection. <button id="retry" class="link" type="button">Try again</button></div>
+
+  <section id="write">
+    <h2 class="h">Write a note</h2>
+    <div id="loading" class="empty">Loading the circle…</div>
+    <div id="empty" class="empty" hidden>No names yet. The person who runs this page adds them in the Google Sheet.</div>
+    <div id="chips" class="chips" role="group" aria-label="Who is the note for"></div>
+
+    <form id="compose" class="compose" hidden>
+      <label for="noteText" id="noteLabel" class="meta">Your note</label>
+      <textarea id="noteText" maxlength="500" placeholder="Say it like you would to their face."></textarea>
+      <div class="hp" aria-hidden="true">
+        <label for="website">Leave this empty</label>
+        <input type="text" id="website" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="row">
+        <span class="meta"><span id="count">0</span>/500</span>
+        <button id="sendBtn" class="btn" type="submit">Send without a name</button>
+      </div>
+    </form>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="join" class="card" hidden>
+    <h2 class="h">Want people to write to you?</h2>
+    <p>Pick your name and add your email. We send you a code to make sure the email is yours.</p>
+
+    <form id="regForm" class="form">
+      <label for="regName">Your name</label>
+      <select id="regName"></select>
+      <label for="regEmail">Your email</label>
+      <input id="regEmail" type="email" autocomplete="email" placeholder="you@gmail.com">
+      <button class="btn" type="submit" id="regBtn">Send me a code</button>
+    </form>
+
+    <form id="codeForm" class="form" hidden>
+      <label for="regCode">The 6-digit code from your email</label>
+      <input id="regCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
+      <button class="btn" type="submit" id="codeBtn">Confirm</button>
+      <button class="link" type="button" id="changeEmail">Use a different email</button>
+    </form>
+    <p id="regStatus" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <p class="foot">Notes are sent from the account of the person who runs this page, who can also read every note. Nothing on a note says who wrote it. Once it is sent, it cannot be taken back.</p>
+</main>
+
+<script>
+/* ---- Edit this part ---------------------------------------------------- */
+var CONFIG = {
+  // Paste the Web app URL from step 3 of the README between the quotes.
+  endpoint: 'https://script.google.com/macros/s/AKfycbyPnOemhB_ql-j-BMijTq_GEYIRP-KbaIpQK1ZC61Azvpio1Do4umu-5X6Kxo96D-uMxg/exec',
+  maxChars: 500
+};
+/* ------------------------------------------------------------------------ */
+
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var configured = CONFIG.endpoint.indexOf('PASTE_') === -1 && /^https:\/\//.test(CONFIG.endpoint);
+  var state = { people: [], to: '', regName: '' };
+  var memLog = [];
+  var LOG_KEY = 'sulatan-mail-sent';
+
+  var MESSAGES = {
+    unknown_name: 'That name is not on the list.',
+    already_registered: 'That name already has an email. Ask the person who runs this page to reset it.',
+    bad_email: 'That email address does not look right.',
+    too_many: 'Too many tries for today. Try again tomorrow.',
+    bad_code: 'That code is not right. Check the email and try again.',
+    expired: 'That code expired. Go back and ask for a new one.',
+    no_pending: 'Ask for a code first.',
+    quota: 'The daily email limit was reached. Try again tomorrow.',
+    empty: 'Write something first.'
+  };
+  function msg(code, name) {
+    if (code === 'not_registered') return (name || 'They') + ' has not added their email yet.';
+    return MESSAGES[code] || 'That did not go through. Try again in a moment.';
+  }
+
+  function setStatus(sel, text, isErr) {
+    var el = $(sel);
+    el.textContent = text || '';
+    el.className = 'status' + (isErr ? ' err' : '');
+  }
+
+  function readLog() {
+    var now = Date.now(), arr = memLog;
+    try { arr = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch (e) {}
+    return arr.filter(function (t) { return now - t < 3600000; });
+  }
+  function recordSend() {
+    var arr = readLog(); arr.push(Date.now()); memLog = arr;
+    try { localStorage.setItem(LOG_KEY, JSON.stringify(arr)); } catch (e) {}
+  }
+  function limitMessage() {
+    var log = readLog();
+    if (log.length && Date.now() - log[log.length - 1] < 8000) return 'Give it a few seconds before sending another note.';
+    if (log.length >= 10) return 'That is 10 notes in the last hour. Try again a bit later.';
+    return '';
+  }
+
+  async function api(body) {
+    var res = await fetch(CONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(body)
+    });
+    return res.json();
+  }
+
+  function person(name) {
+    return state.people.find(function (p) { return p.name === name; }) || null;
+  }
+  function tintFor(name) {
+    var i = state.people.findIndex(function (p) { return p.name === name; });
+    return 'var(--c' + (((i < 0 ? 0 : i) % 6) + 1) + ')';
+  }
+
+  /* ---------- render ---------- */
+  function renderChips() {
+    var box = $('#chips');
+    box.replaceChildren();
+    state.people.forEach(function (p) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (p.registered ? '' : ' off');
+      b.style.setProperty('--tint', tintFor(p.name));
+      b.setAttribute('aria-pressed', String(p.name === state.to));
+      var label = document.createElement('span');
+      label.textContent = p.name;
+      b.append(label);
+      if (!p.registered) {
+        var small = document.createElement('small');
+        small.textContent = 'no email yet';
+        b.append(small);
+      }
+      b.addEventListener('click', function () { choose(p.name); });
+      box.append(b);
+    });
+  }
+
+  function renderCompose() {
+    var p = person(state.to);
+    $('#compose').hidden = !p;
+    if (!p) return;
+    $('#compose').style.setProperty('--tint', tintFor(p.name));
+    $('#noteLabel').textContent = 'Your note for ' + p.name;
+    $('#sendBtn').disabled = !p.registered;
+    if (!p.registered) {
+      setStatus('#status', p.name + ' has not added their email yet. Ask them to add it below.', true);
+    }
+  }
+
+  function renderJoin() {
+    var open = state.people.filter(function (p) { return !p.registered; });
+    var sel = $('#regName');
+    sel.replaceChildren();
+    open.forEach(function (p) {
+      var o = document.createElement('option');
+      o.value = p.name;
+      o.textContent = p.name;
+      sel.append(o);
+    });
+    $('#join').hidden = !state.people.length;
+    $('#regForm').hidden = !open.length || !$('#codeForm').hidden;
+    if (!open.length && state.people.length) {
+      setStatus('#regStatus', 'Everyone on the list has added an email. If your name is missing, ask the person who runs this page.', false);
+    }
+  }
+
+  function render() {
+    $('#loading').hidden = true;
+    var has = state.people.length > 0;
+    $('#empty').hidden = has;
+    if (state.to && !person(state.to)) state.to = '';
+    renderChips();
+    renderCompose();
+    renderJoin();
+  }
+
+  function choose(name) {
+    state.to = name;
+    setStatus('#status', '');
+    renderChips();
+    renderCompose();
+    if (person(name) && person(name).registered) $('#noteText').focus();
+  }
+
+  /* ---------- actions ---------- */
+  async function loadPeople() {
+    $('#loadError').hidden = true;
+    $('#loading').hidden = false;
+    try {
+      var res = await fetch(CONFIG.endpoint + '?action=people');
+      var data = await res.json();
+      if (!data || !data.ok) throw new Error('bad');
+      state.people = data.people.map(function (p) { return { name: String(p.name), registered: !!p.registered }; });
+      render();
+    } catch (err) {
+      $('#loading').hidden = true;
+      $('#loadError').hidden = false;
+    }
+  }
+
+  async function sendNote(e) {
+    e.preventDefault();
+    var p = person(state.to);
+    if (!p) return;
+    if (!p.registered) { setStatus('#status', msg('not_registered', p.name), true); return; }
+    var text = $('#noteText').value.trim();
+    if (text.length < 2) { setStatus('#status', msg('empty'), true); return; }
+    var lim = limitMessage();
+    if (lim) { setStatus('#status', lim, true); return; }
+
+    var btn = $('#sendBtn');
+    btn.disabled = true;
+    setStatus('#status', 'Sending…');
+    try {
+      var r = await api({ action: 'send', to: p.name, text: text.slice(0, CONFIG.maxChars), website: $('#website').value });
+      if (r && r.ok) {
+        recordSend();
+        $('#noteText').value = '';
+        $('#count').textContent = '0';
+        setStatus('#status', 'Sent to ' + p.name + '. It is in their inbox with no name on it.');
+      } else {
+        setStatus('#status', msg(r && r.error, p.name), true);
+        if (r && r.error === 'not_registered') loadPeople();
+      }
+    } catch (err) {
+      setStatus('#status', 'That did not go through. Check your connection and try again.', true);
+    } finally {
+      var cur = person(state.to);
+      btn.disabled = !(cur && cur.registered);
+    }
+  }
+
+  async function requestCode(e) {
+    e.preventDefault();
+    var name = $('#regName').value;
+    var email = $('#regEmail').value.trim();
+    if (!name) { setStatus('#regStatus', 'Pick your name first.', true); return; }
+    if (!email) { setStatus('#regStatus', 'Type your email.', true); return; }
+    var btn = $('#regBtn');
+    btn.disabled = true;
+    setStatus('#regStatus', 'Sending a code…');
+    try {
+      var r = await api({ action: 'register', name: name, email: email });
+      if (r && r.ok) {
+        state.regName = name;
+        $('#regForm').hidden = true;
+        $('#codeForm').hidden = false;
+        $('#regCode').value = '';
+        $('#regCode').focus();
+        setStatus('#regStatus', 'We sent a code to ' + email + '. It works for 15 minutes.');
+      } else {
+        setStatus('#regStatus', msg(r && r.error), true);
+      }
+    } catch (err) {
+      setStatus('#regStatus', 'That did not go through. Check your connection and try again.', true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function confirmCode(e) {
+    e.preventDefault();
+    var code = $('#regCode').value.trim();
+    if (!code) { setStatus('#regStatus', 'Type the code from your email.', true); return; }
+    var btn = $('#codeBtn');
+    btn.disabled = true;
+    try {
+      var r = await api({ action: 'verify', name: state.regName, code: code });
+      if (r && r.ok) {
+        $('#codeForm').hidden = true;
+        $('#regEmail').value = '';
+        await loadPeople();
+        setStatus('#regStatus', 'Done, ' + state.regName + '. People can write to you now.');
+      } else {
+        setStatus('#regStatus', msg(r && r.error), true);
+      }
+    } catch (err) {
+      setStatus('#regStatus', 'That did not go through. Check your connection and try again.', true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function boot() {
+    if (!configured) {
+      $('#setup').hidden = false;
+      $('#loading').hidden = true;
+      return;
+    }
+    $('#compose').addEventListener('submit', sendNote);
+    $('#regForm').addEventListener('submit', requestCode);
+    $('#codeForm').addEventListener('submit', confirmCode);
+    $('#changeEmail').addEventListener('click', function () {
+      $('#codeForm').hidden = true;
+      $('#regForm').hidden = false;
+      setStatus('#regStatus', '');
+    });
+    $('#retry').addEventListener('click', loadPeople);
+    $('#noteText').addEventListener('input', function () { $('#count').textContent = String($('#noteText').value.length); });
+    loadPeople();
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
