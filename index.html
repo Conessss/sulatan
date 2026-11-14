@@ -111,7 +111,7 @@ button { cursor: pointer; }
   <header>
     <div class="dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <h1><span class="hl">Sulatan</span></h1>
-    <p class="lead">Pick a name and leave them a note. It lands in their email with no name on it, so say the nice thing.</p>
+    <p class="lead">Pick a name and leave them a note. Mapupunta yan sa email nila, and anonymous yan hehe</p>
   </header>
 
   <div id="setup" class="notice" hidden>This page is not connected to your Google Sheet yet, so nothing can be sent. Finish step 4 in the README, then reload.</div>
@@ -262,7 +262,7 @@ var CONFIG = {
     $('#compose').hidden = !p;
     if (!p) return;
     $('#compose').style.setProperty('--tint', tintFor(p.name));
-    $('#noteLabel').textContent = 'Your note for ' + p.name;
+    $('#noteLabel').textContent = 'Message mo kay ' + p.name;
     $('#sendBtn').disabled = !p.registered;
     if (!p.registered) {
       setStatus('#status', p.name + ' has not added their email yet. Ask them to add it below.', true);
